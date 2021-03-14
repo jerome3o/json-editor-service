@@ -1,0 +1,14 @@
+html
+  head
+    title= "hello"
+    link(rel='stylesheet', href='/edit.css', type='text/css')
+    script(src="https://cdn.jsdelivr.net/npm/@json-editor/json-editor@latest/dist/jsoneditor.min.js")
+    script.
+        window.onload = function(event) {
+            var schemaOpts = !{JSON.stringify(schema)};
+            const element = document.getElementById('json-editor-container');
+            const editor = new JSONEditor(element, schemaOpts);
+        }
+  body
+    h1= "hello!"
+    div(id="json-editor-container")

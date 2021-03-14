@@ -1,0 +1,26 @@
+{
+  "name": "json-editor-service",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node ./src/"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jerome3o/json-editor-service.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jerome3o/json-editor-service/issues"
+  },
+  "homepage": "https://github.com/jerome3o/json-editor-service#readme",
+  "dependencies": {
+    "@json-editor/json-editor": "^2.5.2",
+    "express": "^4.17.1",
+    "pug": "^3.0.2"
+  }
+}
