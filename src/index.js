@@ -4,16 +4,19 @@ express = require('express');
 app = express();
 app.get(
     "/edit/:schema", (req, resp) => {
+        // TODO: Handle requests with redirect urls
         const schema64 = req.params.schema;
-        const buffer = new Buffer(schema64, "base64");
+        const buffer = Buffer.from(schema64, "base64");
         const schemaString = buffer.toString("ascii");
         let schema = {}
+
         try {
             schema = JSON.parse(schemaString);
         }
         catch (error) {
             console.log(error)
         }
+        
         resp.render('edit', {schema: schema})
     }
 );
