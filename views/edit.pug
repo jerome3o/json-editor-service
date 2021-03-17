@@ -1,7 +1,6 @@
 html
   head
-    // TODO: dynamic title based on schema
-    title= "hello"
+    title= "Config Editor"
     link(rel='stylesheet', href='/edit.css', type='text/css')
     link(rel="stylesheet", href="https://unpkg.com/spectre.css/dist/spectre.min.css")
     link(rel="stylesheet", href="https://unpkg.com/spectre.css/dist/spectre-exp.min.css")
@@ -10,13 +9,51 @@ html
     script.
         JSONEditor.defaults.theme = 'spectre';
         JSONEditor.defaults.iconlib = 'spectre';
-        window.onload = function(event) {
-            var schemaOpts = !{JSON.stringify(schema)};
+
+        window.onload = event => {
+            var schema = !{JSON.stringify(schema)};
             const element = document.getElementById('json-editor-container');
-            const editor = new JSONEditor(element, schemaOpts);
+            const editor = new JSONEditor(element, { schema: schema });
+
+            accept = () => {
+              const text = JSON.stringify(editor.getValue());
+              console.log(text);
+              
+              navigator.clipboard.writeText(text).then(function() {
+                console.log('Async: Copying to clipboard was successful!');
+              }, function(err) {
+                console.error('Async: Could not copy text: ', err);
+              });
+            }
+
+            var url = !{redirectUrl ? JSON.stringify(redirectUrl) : JSON.stringify("")};
+            if (url) {
+              document.getElementById('accept-button').innerText = `Post to ${url}`
+              accept = () => {
+                const http = new XMLHttpRequest();
+                http.open("GET", url);
+                http.send();
+                http.onreadystatechange = (e) => {
+                  console.log(http.responseText);
+                  document.getElementById('response-title').innerText = `\nResponse: `
+                  document.getElementById('response-content').innerText = http.responseText
+                  document.getElementById('response-timestamp').innerText = `at ${new Date().toString()}.`
+                  document.getElementById('response-content').classList.add('blockquote')
+                }
+              }
+            }
+
+            var title = !{title ? JSON.stringify(title) : JSON.stringify("")};
+            if (title) {
+              document.title = title;
+            }
         }
   body 
     div(class="main-container")
-      h1= "Config Editor"
+      h1 Config Editor
       div(id="json-editor-container")
-      // TODO: Add "post" button that sets the body as the json result
+      button(onclick="accept()", id="accept-button")= "Accept"
+      div(id="output-container")
+        p(id="response-title")
+        p(id="response-content")
+        p(id="response-timestamp")

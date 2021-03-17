@@ -1,23 +1,21 @@
-const { readFile } = require('fs').promises;
 express = require('express');
 
 app = express();
 app.get(
-    "/edit/:schema", (req, resp) => {
-        // TODO: Handle requests with redirect urls
-        const schema64 = req.params.schema;
-        const buffer = Buffer.from(schema64, "base64");
-        const schemaString = buffer.toString("ascii");
-        let schema = {}
+    "/edit/:inputs", (req, resp) => {
+        const inputs64 = req.params.inputs;
+        const buffer = Buffer.from(inputs64, "base64");
+        const inputsString = buffer.toString("ascii");
+
+        let inputs = {}
 
         try {
-            schema = JSON.parse(schemaString);
+            inputs = JSON.parse(inputsString);
         }
         catch (error) {
             console.log(error)
         }
-        
-        resp.render('edit', {schema: schema})
+        resp.render('edit', inputs);
     }
 );
 app.get(
