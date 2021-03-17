@@ -1,6 +1,7 @@
 html
   head
     title= "Config Editor"
+    script(src="/edit.js")
     link(rel='stylesheet', href='/edit.css', type='text/css')
     link(rel="stylesheet", href="https://unpkg.com/spectre.css/dist/spectre.min.css")
     link(rel="stylesheet", href="https://unpkg.com/spectre.css/dist/spectre-exp.min.css")
@@ -16,14 +17,8 @@ html
             const editor = new JSONEditor(element, { schema: schema });
 
             accept = () => {
-              const text = JSON.stringify(editor.getValue());
-              console.log(text);
-              
-              navigator.clipboard.writeText(text).then(function() {
-                console.log('Async: Copying to clipboard was successful!');
-              }, function(err) {
-                console.error('Async: Could not copy text: ', err);
-              });
+              const text = JSON.stringify(editor.getValue(), null, 4);
+              copyText(text);
             }
 
             var url = !{redirectUrl ? JSON.stringify(redirectUrl) : JSON.stringify("")};
@@ -52,7 +47,7 @@ html
     div(class="main-container")
       h1 Config Editor
       div(id="json-editor-container")
-      button(onclick="accept()", id="accept-button")= "Accept"
+      button(onclick="accept()", id="accept-button")= "Copy to clipboard"
       div(id="output-container")
         p(id="response-title")
         p(id="response-content")
