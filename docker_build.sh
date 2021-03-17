@@ -1,0 +1,1 @@
+docker build -t json-schema-editor -f Dockerfile .
